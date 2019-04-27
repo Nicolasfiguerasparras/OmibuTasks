@@ -72,7 +72,7 @@
 
                     <!-- Lateral image -->
                         <div class="login100-pic js-tilt" data-tilt>
-                            <img src="images/img-01.png" alt="IMG">
+                            <img src="images/rupert.gif" alt="IMG">
                         </div>
                     <!-- /Lateral image -->
 
