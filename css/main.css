@@ -1,13 +1,13 @@
 h1{
-    text-align: center;
+    font-family: arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding-top: 15px;
+    margin-bottom: 1px;
 }
 
-.clientSelector{
-    background-color: green;
-}
-
-.clientData{
-    background-color: blue;
+.client{
+    padding-top: 26px;
 }
 
 .addClient{
@@ -25,4 +25,24 @@ body{
 .mainBox{
     margin: 20px !important;
     background: white !important;
+    height:95vh;
+    border-radius: 10px;
+}
+
+.addClientBtn{
+    font-size: 60px;
+    color: dodgerblue;
+    padding-top: 5px;
+}
+
+.addClientBox{
+    text-align: center;
+}
+
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body{
+    font-family: Poppins-Regular, sans-serif;
 }
