@@ -1,0 +1,28 @@
+h1{
+    text-align: center;
+}
+
+.clientSelector{
+    background-color: green;
+}
+
+.clientData{
+    background-color: blue;
+}
+
+.addClient{
+    text-align: right;
+}
+
+.client{
+    text-align: center;
+}
+
+body{
+    background-color: #9053c7 !important;
+}
+
+.mainBox{
+    margin: 20px !important;
+    background: white !important;
+}

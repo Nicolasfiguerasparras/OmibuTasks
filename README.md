@@ -5,6 +5,16 @@
     - Creación de la BBDD
     - Importación de datos
 
+    - Omibu:
+        Trabajadores -> ID_trabajador,
+                        Nombre,
+                        Apellido,
+                        Dirección,
+                        Puesto,
+                        Correo,
+                        Contraseña,
+                        Telef (opcional)
+
 * LOGIN:
     - Conexión con la BBDD
     + Validación del formulario
@@ -39,6 +49,17 @@ _________________________________ (26/04/2019)
     - Creación de la BBDD
     - Importación de datos
 
+    - Omibu:
+        Trabajadores -> ID_trabajador,
+                        Nombre,
+                        Apellido,
+                        Dirección,
+                        Puesto,
+                        Correo,
+                        Contraseña,
+                        Telef (opcional)
+                        
+
 * LOGIN:
     - Conexión con la BBDD
     - Apartado "olvidé mi contraseña":
@@ -67,6 +88,16 @@ __________________________________ (26/04/2019)
     - Diseño de la BBDD
     - Creación de la BBDD
     - Importación de datos
+
+    - Omibu:
+        Trabajadores -> ID_trabajador,
+                        Nombre,
+                        Apellido,
+                        Dirección,
+                        Puesto,
+                        Correo,
+                        Contraseña,
+                        Telef (opcional)
 
 * LOGIN:
     - Conexión con la BBDD

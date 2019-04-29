@@ -1,3 +1,9 @@
+<!--Extract session-->
+<?php
+        session_start();
+    ?>
+<!--/Extract session-->
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -23,13 +29,34 @@
     </head>
     <body>
 
+        <!-- Establish connection with DB -->
+            <?php
+                include('../connectDB.php');
+                $db = connectDb();
+                //$id = collectID($db, 'trabajadores');
+            ?>
+        <!-- /Establish connection with DB -->
+
         <!-- Form action -->
             <?php
                 if(isset($_POST['login'])){
                     $email = $_POST['email'];
                     $password = $_POST['pass'];
+                    
+                    $loginQuery = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$email' and Password = '$password'"));
+                    
+                    if(!$loginQuery == ""){
+                        $_SESSION['login_ok'] = true;
+                        $_SESSION['email'] = $email;
+                        $_SESSION['ID']= $loginQuery['ID_trabajador'];
+                        
+                        // Codificate session and save in cookie if openSession exist
+                        $dataSesion = session_encode();
+                        
+                        if(isset($_POST['openSession'])){
+                            setcookie("session", $dataSesion, time()+(60*60*60), "/");
+                        }
 
-                    if($email == 'admin@omibu.com' && $password == 'admin'){
                         header("Location: ../index.php");
                     }else{
                         header("Location: index.php?error=true");
@@ -42,7 +69,7 @@
             <div class="container-login100">
                 <div class="wrap-login100">
                     <div class="login100-pic js-tilt" data-tilt>
-                        <img src="images/rupert.gif" alt="IMG">
+                        <img src="images/rupert.gif" alt="gif de rupert, mascota de Ómibu">
                     </div>
 
                     <form class="login100-form validate-form" method="post" enctype="multipart/form-data">
@@ -64,6 +91,10 @@
                             <span class="symbol-input100">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                             </span>
+                        </div>
+
+                        <div class="checkbox">
+                            <input type="checkbox" name="openSession"> Mantener la sesión abierta
                         </div>
 
                         <div class="container-login100-form-btn">
