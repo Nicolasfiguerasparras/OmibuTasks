@@ -46,24 +46,50 @@
 		<div class="container-fluid">
 			<div class="mainBox">
 				<div class="row">
-					<div class="col-3 addClientBox">
-						<a href="#"><i class="fas fa-plus-circle addClientBtn"></i></a>
-					</div>
-					<div class="col-9 welcomeMessage">
-						<h1>Bienvenido, <?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
-					</div>
+
+					<!-- Add client button -->
+						<div class="col-3 addClientBox">
+							<a href="#"><i class="fas fa-plus-circle addClientBtn"></i></a>
+						</div>
+					<!-- /Add client button -->
+
+					<!-- Welcome message -->
+						<div class="col-9 welcomeMessage">
+							<h1>Bienvenido, <?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
+						</div>
+					<!-- /Welcome message -->
 				</div>
 
 				<div class="row">
 					<div class="col-3">
-						<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Omibu</a>
-							<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Sitamon</a>
-							<a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Aerostart</a>
-							<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Laser Definitive</a>
-							<a class="nav-link" href="login/logout.php">Logout</a>
-						</div>
+
+						<!-- Lateral NavBar client list from DB -->
+							<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+								<?php
+									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
+
+									if($row = mysqli_fetch_array($clientsQuery)){ 
+										do{
+											if(isset($_GET['client'])){
+												if($_GET['client'] == $row['ID_cliente']){
+													echo "<a class='nav-link active' href='index.php?client='$row[ID_cliente]'>".$row['Nombre']."</a>";
+												}else{
+													echo "<a class='nav-link' href='index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+												}
+											}else{
+												echo "<a class='nav-link' href='index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+											}
+											
+										}while($row = mysqli_fetch_array($clientsQuery));
+									}
+								?>
+								<a class="nav-link" href="login/logout.php">Logout</a>
+							</div>
+						<!-- /Lateral NavBar client list from DB -->
+
 					</div>
+
+					<!-- Main content -->
 					<div class="col-9">
 						<div class="tab-content" id="v-pills-tabContent">
 							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -97,116 +123,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-								<nav>
-									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-									</div>
-								</nav>
-
-								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-								<nav>
-									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-									</div>
-								</nav>
-
-								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-								<nav>
-									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-									</div>
-								</nav>
-
-								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-										<p>Tarea</p>
-										<p>Tarea</p>
-										<p>Tarea</p>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
-
-					<!-- <div class="col-8 clientData">
-						<nav>
-							<div class="nav nav-tabs" id="nav-tab" role="tablist">
-								<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-								<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-								<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-							</div>
-						</nav>
-						<div class="tab-content" id="nav-tabContent">
-							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-								<p>Tarea</p>
-								<p>Tarea</p>
-							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-								<p>Tarea</p>
-								<p>Tarea</p>
-								<p>Tarea</p>
-								<p>Tarea</p>
-							</div>
-							<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-								<p>Tarea</p>
-								<p>Tarea</p>
-								<p>Tarea</p>
-							</div>
-						</div>
-					</div> -->
 				</div>
 			</div>
 		</div>
