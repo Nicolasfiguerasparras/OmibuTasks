@@ -51,9 +51,6 @@
 					</div>
 					<div class="col-9 welcomeMessage">
 						<h1>Bienvenido, <?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
-						<!-- <div class="addClient">
-							<i class="fas fa-plus"></i>
-						</div> -->
 					</div>
 				</div>
 
@@ -72,46 +69,49 @@
 							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 								<nav>
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Opciones</a>
+										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
+										<a class="nav-item nav-link" id="lowPriority" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
+										<a class="nav-item nav-link" id="options" data-toggle="tab" href="#nav-contact2" role="tab" aria-controls="nav-contact2" aria-selected="false">Opciones</a>
 									</div>
 								</nav>
 
 								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
 									</div>
-									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+									<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="lowPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
+									</div>
+									<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
+										<a href="">Añadir tarea</a>
 									</div>
 								</div>
 							</div>
 							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 								<nav>
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
+										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
 										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
 									</div>
 								</nav>
 
 								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
@@ -127,18 +127,18 @@
 							<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 								<nav>
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
+										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
 										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
 									</div>
 								</nav>
 
 								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
@@ -154,18 +154,18 @@
 							<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 								<nav>
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-										<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
+										<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+										<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
 										<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
 									</div>
 								</nav>
 
 								<div class="tab-content" id="nav-tabContent">
-									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+									<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 									</div>
-									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
 										<p>Tarea</p>
 										<p>Tarea</p>
 										<p>Tarea</p>
@@ -184,17 +184,17 @@
 					<!-- <div class="col-8 clientData">
 						<nav>
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
-								<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
-								<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
+								<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+								<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
 								<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
-							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 								<p>Tarea</p>
 								<p>Tarea</p>
 							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
 								<p>Tarea</p>
 								<p>Tarea</p>
 								<p>Tarea</p>
