@@ -1,5 +1,5 @@
 <!--Extract session-->
-<?php
+    <?php
         session_start();
     ?>
 <!--/Extract session-->
@@ -25,7 +25,7 @@
 			<?php
                 include('../connectDB.php');
                 $db = connectDb();
-                //$id = collectID($db, 'trabajadores');
+                $id = collectID($db, 'tareas');
             ?>
 		<!-- /Establish connection with DB -->
 
@@ -38,7 +38,17 @@
 		<!-- /Restrictions -->
 
         <!-- Form action -->
-
+                <?php
+                    if(isset($_POST['createTask'])){
+                        $title = $_POST['title'];
+                        $priority = $_POST['priority'];
+                        $description = $_POST['description'];
+                        $limitDate = $_POST['limitDate'];
+                        $workerID = $_POST['worker'];
+                        $clientID = $_GET['client'];
+                        $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente) VALUES ('null', '$title', '$description', '$limitDate', $priority, $workerID, $clientID)") or die(mysqli_error($db));
+                    }
+                ?>
         <!-- /Form action -->
 		
 		<!-- Extract client data -->
@@ -60,7 +70,7 @@
 
                         <!-- Welcome message -->
                             <div class="col-9 welcomeMessage">
-                                <h1>Bienvenido, <?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
+                                <h1><?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
                             </div>
                         <!-- /Welcome message -->
                     </div>
@@ -89,7 +99,7 @@
                                             }while($row = mysqli_fetch_array($clientsQuery));
                                         }
                                     ?>
-                                    <a class="nav-link" href="login/logout.php">Logout</a>
+                                    <a class="nav-link" href="../login/logout.php">Logout</a>
                                 </div>
                             </div>
                         <!-- /Lateral NavBar client list from DB -->
@@ -98,9 +108,9 @@
                             <div class="col-9">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                        <br><h3>Añada los datos de la tarea</h3><br>
 
                                         <form action="addTask.php" id="addTaskForm">
+                                            <input type="number" placeholder="<?php echo $id ?>" hidden>
                                             <div class="form-row">
                                                 <div class="form-group col-md-5">
                                                     <label for="title">Título de la tarea</label>
@@ -109,30 +119,47 @@
                                                 <div class="form-group col-md-5">
                                                     <label for="priority">Prioridad</label>
                                                     <select id="priority" name="priority" class="form-control">
-                                                        <option selected disabled>Escoja una prioridad...</option>
-                                                        <option>Prioridad alta</option>
-                                                        <option>Prioridad media</option>
-                                                        <option>Prioridad baja</option>
+                                                        <option selected value="0" disabled>Escoja una prioridad...</option>
+                                                        <option value="1">Prioridad alta</option>
+                                                        <option value="2">Prioridad media</option>
+                                                        <option value="3">Prioridad baja</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">
                                                     <label for="description">Descripción</label>
-                                                    <textarea class="form-control" id="description" rows="3"></textarea>
+                                                    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-row">
-                                                <div class="form-group col-md-2">
+                                                <div class="form-group col-md-5">
+                                                    <label for="worker">Trabajador</label>
+                                                    <select id="worker" name="worker" class="form-control">
+                                                        <option selected disabled value="0">Elige un trabajador para esta tarea...</option>
+                                                        <?php 
+                                                            $workerQuery = mysqli_query($db, "SELECT ID_trabajador, Nombre, Apellidos FROM trabajadores");
+                                                            // Workers count
+                                                            $rows = mysqli_num_rows($workerQuery);
+
+                                                            // For loop depending of workers count
+                                                            for($i=0;$i<$rows;$i++){
+                                                                $data=mysqli_fetch_array($workerQuery);
+                                                                echo "<option value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-5">
                                                     <label for="limitDate">Fecha límite</label>
-                                                    <input type="date" class="form-control" id="limitDate">
+                                                    <input type="date" class="form-control"name="limitDate" id="limitDate">
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-2">
-                                                    <input name="submit" class="btn btn-primary" type="submit">
+                                                    <input name="submit" class="btn btn-primary" id="addTask" name="addTask" type="submit">
                                                 </div>
-                                            </div>                                  
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
