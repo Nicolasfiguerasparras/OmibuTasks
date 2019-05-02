@@ -33,7 +33,11 @@
 			<?php
                 if(!isset($_SESSION['email'])){
 					header("location: notAllowed.php");
-                }
+				}
+				
+				if(isset($_GET['client']) && $_GET['client'] == ""){
+					header("location: index.php");
+				}
 			?>
 		<!-- /Restrictions -->
 		
@@ -119,7 +123,11 @@
 										<p>Tarea</p>
 									</div>
 									<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
-										<a href="">Añadir tarea</a>
+										<br>
+										<button type="button" class="btn btn-outline-info"><a href="tasks/addTask.php">Añadir tarea</a></button>
+										<button type="button" class="btn btn-outline-info"><a href="">Ver ficha</a></button>
+										<button type="button" class="btn btn-outline-info"><a href="">Editar tareas</a></button>
+										<button type="button" class="btn btn-outline-info"><a href="">Ver calendario</a></button>
 									</div>
 								</div>
 							</div>
