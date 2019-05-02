@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2019 a las 08:46:43
+-- Tiempo de generación: 02-05-2019 a las 11:46:07
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -21,6 +21,41 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `omibu`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `ID_cliente` bigint(20) UNSIGNED NOT NULL,
+  `Nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`ID_cliente`, `Nombre`) VALUES
+(1, 'Ómibu'),
+(2, 'Sitamon');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tareas`
+--
+
+CREATE TABLE `tareas` (
+  `ID_tarea` bigint(20) UNSIGNED NOT NULL,
+  `Nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `Descripción` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `Fecha` date NOT NULL,
+  `Prioridad` int(1) NOT NULL,
+  `Trabajador` bigint(20) NOT NULL,
+  `Cliente` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
 
@@ -52,6 +87,20 @@ INSERT INTO `trabajadores` (`ID_trabajador`, `Nombre`, `Apellidos`, `Direccion`,
 --
 
 --
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`ID_cliente`),
+  ADD UNIQUE KEY `ID_cliente` (`ID_cliente`);
+
+--
+-- Indices de la tabla `tareas`
+--
+ALTER TABLE `tareas`
+  ADD PRIMARY KEY (`ID_tarea`),
+  ADD UNIQUE KEY `ID_tarea` (`ID_tarea`);
+
+--
 -- Indices de la tabla `trabajadores`
 --
 ALTER TABLE `trabajadores`
@@ -61,6 +110,18 @@ ALTER TABLE `trabajadores`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `ID_cliente` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `tareas`
+--
+ALTER TABLE `tareas`
+  MODIFY `ID_tarea` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `trabajadores`
