@@ -20,7 +20,13 @@
 	    <title>Inicio</title>
 	</head>
 	<body>
-		
+
+		<!-- Extract URL -->
+			<?php
+				$actualURL = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+			?>
+		<!-- /Extract URL -->
+
 		<!-- Establish connection with DB -->
 			<?php
                 include('../connectDB.php');
@@ -66,7 +72,7 @@
 
 						<!-- Lateral NavBar client list from DB -->
 							<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-								<a class="nav-link active" href="myTasks.php">Mis tareas</a>
+								<a class="nav-link active" href="<?php echo $actualURL ?>">Mis tareas</a>
 								<?php
 									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
 
