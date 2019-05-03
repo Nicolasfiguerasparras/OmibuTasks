@@ -31,7 +31,7 @@
 
 		<!-- Restrictions -->
 			<?php
-                if(!isset($_SESSION['email'])){
+                if(!isset($_SESSION['login_ok'])){
 					header("location: notAllowed.php");
 				}
 				
@@ -59,17 +59,18 @@
 
 					<!-- Welcome message -->
 						<div class="col-9 welcomeMessage">
-						<?php
-							if(isset($_GET['client'])){
-								$welcomeMessage = $workerData['Nombre']." ".$workerData['Apellidos'];
-							}else{
-								$welcomeMessage = "Bienvenido, ".$workerData['Nombre']." ".$workerData['Apellidos'];
-							}
+							<?php
+								if(isset($_GET['client'])){
+									$welcomeMessage = $workerData['Nombre']." ".$workerData['Apellidos'];
+								}else{
+									$welcomeMessage = "Bienvenido, ".$workerData['Nombre']." ".$workerData['Apellidos'];
+								}
 
-							echo "<h1>".$welcomeMessage."</h1>";
-						?>
+								echo "<h1>".$welcomeMessage."</h1>";
+							?>
 						</div>
 					<!-- /Welcome message -->
+
 				</div>
 
 				<div class="row">
@@ -77,6 +78,7 @@
 
 						<!-- Lateral NavBar client list from DB -->
 							<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+								<a class="nav-link" href="myTasks/">Mis tareas</a>
 								<?php
 									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
 
@@ -106,15 +108,15 @@
 						<?php
 							// Fill main DIV if isset clientID on URL
 							if(isset($_GET['client'])){
-								// Get clientID of actual section 
+								// Get clientID of actual section
 								$actualID = $_GET['client'];
 						?>
 								<div class="tab-content" id="v-pills-tabContent">
 									<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 										<nav>
 											<div class="nav nav-tabs" id="nav-tab" role="tablist">
-												<!-- Añadir una vista genérica de tareas difereciadas por color -->
-												<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Prioridad alta</a>
+												<a class="nav-item nav-link active" id="genericView" data-toggle="tab" href="#nav-first" role="tab" aria-controls="genericView" aria-selected="true">Vista general</a>
+												<a class="nav-item nav-link" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Prioridad alta</a>
 												<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
 												<a class="nav-item nav-link" id="lowPriority" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
 												<a class="nav-item nav-link" id="options" data-toggle="tab" href="#nav-contact2" role="tab" aria-controls="nav-contact2" aria-selected="false">Opciones</a>
@@ -122,7 +124,7 @@
 										</nav>
 
 										<?php
-											$taskQuery = mysqli_query($db, "SELECT * FROM tareas");
+											$taskQuery = mysqli_query($db, "SELECT * FROM tareas WHERE trabajador = $_SESSION[ID] and Cliente = $_GET[client]");
 											
 											$lowPriority = $mediumPriority = $highPriority = Array();
 
@@ -131,43 +133,103 @@
 													if($row['Prioridad'] == 1){
 														$highPriority[] = $row;
 													}elseif($row['Prioridad'] == 2){
-														$mediumPriority = $row;
+														$mediumPriority[] = $row;
 													}elseif($row['Prioridad'] == 3){
-														$lowPriority = $row;
+														$lowPriority[] = $row;
 													}
 												}while($row = mysqli_fetch_array($taskQuery));
 											}
 										?>
 										<div class="tab-content" id="nav-tabContent">
-											<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-												<ul>
-													<?php
-														// Filtrate by $_SESSION && Client
-														for($i=0; $i<sizeof($highPriority); $i++){
-															$auxArray = $highPriority[$i];
-															echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-														}
-													?>
-												</ul>
-											</div>
-											<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-												<p>Tarea</p>
-												<p>Tarea</p>
-												<p>Tarea</p>
-												<p>Tarea</p>
-											</div>
-											<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="lowPriority">
-												<p>Tarea</p>
-												<p>Tarea</p>
-												<p>Tarea</p>
-											</div>
-											<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
-												<br>
-												<button type="button" class="btn btn-outline-info"><a href="tasks/addTask.php?client=<?php echo $actualID ?>">Añadir tarea</a></button>
-												<button type="button" class="btn btn-outline-info"><a href="">Ver ficha</a></button>
-												<button type="button" class="btn btn-outline-info"><a href="">Editar tareas</a></button>
-												<button type="button" class="btn btn-outline-info"><a href="">Ver calendario</a></button>
-											</div>
+
+											<!-- Generic view -->
+												<div class="tab-pane fade show active" id="nav-first" role="tabpanel" aria-labelledby="genericView">
+
+													<!-- High priority tasks -->
+														<div class="col-4" style="background-color:red">
+															<?php
+																for($i=0; $i<sizeof($highPriority); $i++){
+																	$auxArray = $highPriority[$i];
+																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+																}
+															?>
+														</div>
+													<!-- /High priority tasks -->
+
+													<!-- Medium priority tasks -->
+														<div class="col-4" style="background-color:yellow">
+															<?php
+																for($i=0; $i<sizeof($mediumPriority); $i++){
+																	$auxArray = $mediumPriority[$i];
+																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+																}
+															?>
+														</div>
+													<!-- /Medium priority tasks -->
+
+													<!-- Low priority tasks -->
+														<div class="col-4" style="background-color:green">
+															<?php
+																for($i=0; $i<sizeof($lowPriority); $i++){
+																	$auxArray = $lowPriority[$i];
+																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+																}
+															?>
+														</div>
+													<!-- /Low priority tasks -->
+
+												</div>
+											<!-- /Generic view -->
+											
+											<!-- High priority -->
+												<div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
+													<ul>
+														<?php
+															for($i=0; $i<sizeof($highPriority); $i++){
+																$auxArray = $highPriority[$i];
+																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+															}
+														?>
+													</ul>
+												</div>
+											<!-- /High priority -->
+
+											<!-- Medium priority -->
+												<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
+													<ul>
+														<?php
+															for($i=0; $i<sizeof($mediumPriority); $i++){
+																$auxArray = $mediumPriority[$i];
+																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+															}
+														?>
+													</ul>
+												</div>
+											<!-- /Medium priority -->
+
+											<!-- Low priority -->
+												<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="lowPriority">
+													<ul>
+														<?php
+															for($i=0; $i<sizeof($lowPriority); $i++){
+																$auxArray = $lowPriority[$i];
+																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
+															}
+														?>
+													</ul>
+												</div>
+											<!-- /Low priority -->
+
+											<!-- Options -->
+												<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
+													<br>
+													<button type="button" class="btn btn-outline-info"><a href="tasks/addTask.php?client=<?php echo $actualID ?>">Añadir tarea</a></button>
+													<button type="button" class="btn btn-outline-info"><a href="">Ver ficha</a></button>
+													<button type="button" class="btn btn-outline-info"><a href="">Editar tareas</a></button>
+													<button type="button" class="btn btn-outline-info"><a href="">Ver calendario</a></button>
+												</div>
+											<!-- /Options -->
+
 										</div>
 									</div>
 								</div>
