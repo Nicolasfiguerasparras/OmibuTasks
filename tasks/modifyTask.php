@@ -1,5 +1,5 @@
 <!--Extract session-->
-    <?php
+<?php
         session_start();
     ?>
 <!--/Extract session-->
@@ -129,10 +129,16 @@
                                                 <input type="number" value="<?php echo $clientID ?>" name="clientID" hidden>
                                             <!-- /Invisible inputs -->
 
+                                            <!-- Get actual values -->
+                                                <?php
+                                                    $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tasks WHERE ID_tarea = '$_GET[task]'"));
+                                                ?>
+                                            <!-- /Get actual values -->
+
                                             <div class="form-row">
                                                 <div class="form-group col-md-5">
                                                     <label for="title">Título de la tarea</label>
-                                                    <input id="title" name="title" type="text" class="form-control" placeholder="Inserte el título..." required>
+                                                    <input id="title" name="title" type="text" class="form-control" value="<?php echo $actualValues['Nombre'] ?>" required>
                                                 </div>
                                                 <div class="form-group col-md-5">
                                                     <label for="priority">Prioridad</label>

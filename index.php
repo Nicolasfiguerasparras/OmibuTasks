@@ -17,7 +17,10 @@
 		<!-- --------------------------------------------------------------------------------------------- -->
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 		<!-- --------------------------------------------------------------------------------------------- -->
-	    <title>Inicio</title>
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		
+		<title>Inicio</title>
 	</head>
 	<body>
 		
@@ -160,6 +163,7 @@
 
 														<thead>
 															<tr class="table-primary">
+																<th scope="col"></th>
 																<th scope="col">Prioridad</th>
 																<th scope="col">Título</th>
 																<th scope="col">Descripción</th>
@@ -174,11 +178,19 @@
 																	for($i=0; $i<sizeof($highPriority); $i++){
 																		$auxArray = $highPriority[$i];
 																		echo "<tr class='table-danger'>";
+																			
+																			if($auxArray['Finalizado'] == '0'){
+																				echo "<td><i class='fa fa-close'></i></td>";
+																			}else{
+																				echo "<td><i class='fa fa-check'></i></td>";
+																			}
+																			
 																			echo "<td>Alta</td>";
 																			echo "<td>".$auxArray['Nombre']."</td>";
 																			echo "<td>".$auxArray['Descripcion']."</td>";
-																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																			echo "<td>".$date."</td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																?>
@@ -189,11 +201,17 @@
 																	for($i=0; $i<sizeof($mediumPriority); $i++){
 																		$auxArray = $mediumPriority[$i];
 																		echo "<tr class='table-warning'>";
+																			if($auxArray['Finalizado'] == 0){
+																				echo "<td><i class='fa fa-close'></td>";
+																			}else{
+																				echo "<td><i class='fa fa-check'></td>";
+																			}
 																			echo "<td>Media</td>";
 																			echo "<td>".$auxArray['Nombre']."</td>";
 																			echo "<td>".$auxArray['Descripcion']."</td>";
-																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																			echo "<td>".$date."</td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																?>
@@ -204,11 +222,17 @@
 																	for($i=0; $i<sizeof($lowPriority); $i++){
 																		$auxArray = $lowPriority[$i];
 																		echo "<tr class='table-info'>";
+																			if($auxArray['Finalizado'] == 0){
+																				echo "<td><i class='fa fa-close'></td>";
+																			}else{
+																				echo "<td><i class='fa fa-check'></td>";
+																			}
 																			echo "<td>Baja</td>";
 																			echo "<td>".$auxArray['Nombre']."</td>";
 																			echo "<td>".$auxArray['Descripcion']."</td>";
-																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																			echo "<td>".$date."</td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																	
@@ -218,8 +242,8 @@
 														</tbody>
 
 														<tfoot>
-															<tr class="table-info">
-																<td colspan="5"><a href="tasks/addTask.php?client=<?php echo $actualID ?>"><button type="button" class="btn btn-secondary" style="width: 100%">Añadir tarea</button></a></td>
+															<tr class="table-light">
+																<td colspan="6"><a href="tasks/addTask.php?client=<?php echo $actualID ?>"><button type="button" class="btn btn-secondary" style="width: 100%">Añadir tarea</button></a></td>
 															</tr>
 														</tfoot>
 													</table>
@@ -228,40 +252,99 @@
 											
 											<!-- High priority -->
 												<div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-													<ul>
-														<?php
-															for($i=0; $i<sizeof($highPriority); $i++){
-																$auxArray = $highPriority[$i];
-																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-															}
-														?>
-													</ul>
+													<table class="table col-11">
+
+														<thead>
+															<tr class="table-primary">
+																<th scope="col">Prioridad</th>
+																<th scope="col">Título</th>
+																<th scope="col">Descripción</th>
+																<th scope="col">Fecha límite</th>
+															</tr>
+														</thead>
+
+														<tbody>
+															<?php
+																for($i=0; $i<sizeof($highPriority); $i++){
+																	$auxArray = $highPriority[$i];
+																	echo "<tr class='table-danger'>";
+																		echo "<td>Alta</td>";
+																		echo "<td>".$auxArray['Nombre']."</td>";
+																		echo "<td>".$auxArray['Descripcion']."</td>";
+																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																		echo "<td>".$date."</td>";
+																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																	echo "</tr>";
+																}
+															?>
+														</tbody>
+													</table>
 												</div>
 											<!-- /High priority -->
 
 											<!-- Medium priority -->
 												<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-													<ul>
-														<?php
-															for($i=0; $i<sizeof($mediumPriority); $i++){
-																$auxArray = $mediumPriority[$i];
-																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-															}
-														?>
-													</ul>
+													<table class="table col-11">
+
+														<thead>
+															<tr class="table-primary">
+																<th scope="col">Prioridad</th>
+																<th scope="col">Título</th>
+																<th scope="col">Descripción</th>
+																<th scope="col">Fecha límite</th>
+															</tr>
+														</thead>
+
+														<tbody>
+															<?php
+																for($i=0; $i<sizeof($mediumPriority); $i++){
+																	$auxArray = $mediumPriority[$i];
+																	echo "<tr class='table-warning'>";
+																		echo "<td>Media</td>";
+																		echo "<td>".$auxArray['Nombre']."</td>";
+																		echo "<td>".$auxArray['Descripcion']."</td>";
+																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																		echo "<td>".$date."</td>";
+																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																	echo "</tr>";
+																}
+															?>
+														</tbody>
+
+													</table>
 												</div>
 											<!-- /Medium priority -->
 
 											<!-- Low priority -->
 												<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="lowPriority">
-													<ul>
-														<?php
-															for($i=0; $i<sizeof($lowPriority); $i++){
-																$auxArray = $lowPriority[$i];
-																echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-															}
-														?>
-													</ul>
+													<table class="table col-11">
+
+														<thead>
+															<tr class="table-primary">
+																<th scope="col">Prioridad</th>
+																<th scope="col">Título</th>
+																<th scope="col">Descripción</th>
+																<th scope="col">Fecha límite</th>
+															</tr>
+														</thead>
+
+														<tbody>
+															<?php
+																for($i=0; $i<sizeof($lowPriority); $i++){
+																	$auxArray = $lowPriority[$i];
+																	echo "<tr class='table-info'>";
+																		echo "<td>Baja</td>";
+																		echo "<td>".$auxArray['Nombre']."</td>";
+																		echo "<td>".$auxArray['Descripcion']."</td>";
+																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																		echo "<td>".$date."</td>";
+																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																	echo "</tr>";
+																}		
+															?>
+														</tbody>
+														
+													</table>
 												</div>
 											<!-- /Low priority -->
 
