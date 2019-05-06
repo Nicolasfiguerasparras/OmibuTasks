@@ -26,6 +26,11 @@
                 include('../connectDB.php');
                 $db = connectDb();
                 $id = collectID($db, 'tareas');
+
+                // Client ID from URL
+                if(isset($_GET['client'])){
+                    $clientID = $_GET['client'];
+                }
             ?>
 		<!-- /Establish connection with DB -->
 
@@ -39,14 +44,19 @@
 
         <!-- Form action -->
                 <?php
-                    if(isset($_POST['createTask'])){
+                    if(isset($_POST['addTask'])){
                         $title = $_POST['title'];
                         $priority = $_POST['priority'];
                         $description = $_POST['description'];
                         $limitDate = $_POST['limitDate'];
                         $workerID = $_POST['worker'];
-                        $clientID = $_GET['client'];
-                        $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente) VALUES ('null', '$title', '$description', '$limitDate', $priority, $workerID, $clientID)") or die(mysqli_error($db));
+                        $clientID = $_POST['clientID'];
+                        
+                        // Restrictions
+
+                        $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID')") or die(mysqli_error($db));
+
+                        header("location: ../index.php");
                     }
                 ?>
         <!-- /Form action -->
@@ -59,6 +69,7 @@
 	
 		<div class="container-fluid">
 			<div class="mainBox">
+
                 <!-- Header -->
                     <div class="row">
 
@@ -73,6 +84,7 @@
                                 <h1><?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
                             </div>
                         <!-- /Welcome message -->
+
                     </div>
                 <!-- /Header -->
 
@@ -81,6 +93,7 @@
                         <!-- Lateral NavBar client list from DB -->
                             <div class="col-3">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link" href="../myTasks/">Mis tareas</a>
                                     <?php
                                         $clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
 
@@ -109,8 +122,13 @@
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 
-                                        <form action="addTask.php" id="addTaskForm">
-                                            <input type="number" placeholder="<?php echo $id ?>" hidden>
+                                        <form action="addTask.php" method="post" id="addTaskForm">
+
+                                            <!-- Invisible inputs -->
+                                                <input type="number" value="<?php echo $id ?>" name="taskID" hidden>
+                                                <input type="number" value="<?php echo $clientID ?>" name="clientID" hidden>
+                                            <!-- /Invisible inputs -->
+
                                             <div class="form-row">
                                                 <div class="form-group col-md-5">
                                                     <label for="title">Título de la tarea</label>
@@ -157,7 +175,7 @@
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-2">
-                                                    <input name="submit" class="btn btn-primary" id="addTask" name="addTask" type="submit">
+                                                    <input type="submit" class="btn btn-primary" id="addTask" name="addTask">
                                                 </div>
                                             </div>
                                         </form>

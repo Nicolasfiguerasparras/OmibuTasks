@@ -38,6 +38,8 @@
 				if(isset($_GET['client']) && $_GET['client'] == ""){
 					header("location: index.php");
 				}
+
+				date_default_timezone_set('Europe/Madrid');
 			?>
 		<!-- /Restrictions -->
 		
@@ -154,39 +156,73 @@
 											<!-- Generic view -->
 												<div class="tab-pane fade show active" id="nav-first" role="tabpanel" aria-labelledby="genericView">
 
-													<!-- High priority tasks -->
-														<div class="col-4" style="background-color:red">
-															<?php
-																for($i=0; $i<sizeof($highPriority); $i++){
-																	$auxArray = $highPriority[$i];
-																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-																}
-															?>
-														</div>
-													<!-- /High priority tasks -->
+													<table class="table col-11">
 
-													<!-- Medium priority tasks -->
-														<div class="col-4" style="background-color:yellow">
-															<?php
-																for($i=0; $i<sizeof($mediumPriority); $i++){
-																	$auxArray = $mediumPriority[$i];
-																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-																}
-															?>
-														</div>
-													<!-- /Medium priority tasks -->
+														<thead>
+															<tr class="table-primary">
+																<th scope="col">Prioridad</th>
+																<th scope="col">Título</th>
+																<th scope="col">Descripción</th>
+																<th scope="col">Fecha límite</th>
+															</tr>
+														</thead>
+														
+														<tbody>
 
-													<!-- Low priority tasks -->
-														<div class="col-4" style="background-color:green">
-															<?php
-																for($i=0; $i<sizeof($lowPriority); $i++){
-																	$auxArray = $lowPriority[$i];
-																	echo "<li>".$auxArray['Nombre']." ".$auxArray['Descripcion']."</li>";
-																}
-															?>
-														</div>
-													<!-- /Low priority tasks -->
+															<!-- High priority tasks -->
+																<?php
+																	for($i=0; $i<sizeof($highPriority); $i++){
+																		$auxArray = $highPriority[$i];
+																		echo "<tr class='table-danger'>";
+																			echo "<td>Alta</td>";
+																			echo "<td>".$auxArray['Nombre']."</td>";
+																			echo "<td>".$auxArray['Descripcion']."</td>";
+																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			echo "<td>".$date."</td>";
+																		echo "</tr>";
+																	}
+																?>
+															<!-- /High priority tasks -->
 
+															<!-- Medium priority tasks -->
+																<?php
+																	for($i=0; $i<sizeof($mediumPriority); $i++){
+																		$auxArray = $mediumPriority[$i];
+																		echo "<tr class='table-warning'>";
+																			echo "<td>Media</td>";
+																			echo "<td>".$auxArray['Nombre']."</td>";
+																			echo "<td>".$auxArray['Descripcion']."</td>";
+																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			echo "<td>".$date."</td>";
+																		echo "</tr>";
+																	}
+																?>
+															<!-- /Medium priority tasks -->
+
+															<!-- Low priority tasks -->
+																<?php
+																	for($i=0; $i<sizeof($lowPriority); $i++){
+																		$auxArray = $lowPriority[$i];
+																		echo "<tr class='table-info'>";
+																			echo "<td>Baja</td>";
+																			echo "<td>".$auxArray['Nombre']."</td>";
+																			echo "<td>".$auxArray['Descripcion']."</td>";
+																			$date = date("F j, Y,", strtotime("$auxArray[Fecha]"));
+																			echo "<td>".$date."</td>";
+																		echo "</tr>";
+																	}
+																	
+																?>
+															<!-- /Low priority tasks -->
+
+														</tbody>
+
+														<tfoot>
+															<tr class="table-info">
+																<td colspan="5"><a href="tasks/addTask.php?client=<?php echo $actualID ?>"><button type="button" class="btn btn-secondary" style="width: 100%">Añadir tarea</button></a></td>
+															</tr>
+														</tfoot>
+													</table>
 												</div>
 											<!-- /Generic view -->
 											
