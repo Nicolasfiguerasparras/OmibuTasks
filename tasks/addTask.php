@@ -56,7 +56,7 @@
 
                         $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente, Finalizado) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
 
-                        header("location: ../index.php");
+                        header("location: ../index.php?client=$clientID");
                     }
                 ?>
         <!-- /Form action -->

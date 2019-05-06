@@ -131,7 +131,7 @@
 
                                             <!-- Get actual values -->
                                                 <?php
-                                                    $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tasks WHERE ID_tarea = '$_GET[task]'"));
+                                                    $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tareas WHERE ID_tarea = '$_GET[task]'"));
                                                 ?>
                                             <!-- /Get actual values -->
 
@@ -143,25 +143,49 @@
                                                 <div class="form-group col-md-5">
                                                     <label for="priority">Prioridad</label>
                                                     <select id="priority" name="priority" class="form-control">
-                                                        <option selected value="0" disabled>Escoja una prioridad...</option>
-                                                        <option value="1">Prioridad alta</option>
-                                                        <option value="2">Prioridad media</option>
-                                                        <option value="3">Prioridad baja</option>
+                                                        
+                                                        <!-- Option selected from DB -->
+                                                            <?php
+                                                                if($actualValues['Prioridad'] == '1'){
+                                                                    echo "
+                                                                        <option value='0' disabled>Escoja una prioridad...</option>
+                                                                        <option selected value='1'>Prioridad alta</option>
+                                                                        <option value='2'>Prioridad media</option>
+                                                                        <option value='3'>Prioridad baja</option>
+                                                                    ";
+                                                                }elseif($actualValues['Prioridad'] == '2'){
+                                                                    echo "
+                                                                        <option value='0' disabled>Escoja una prioridad...</option>
+                                                                        <option value='1'>Prioridad alta</option>
+                                                                        <option selected value='2'>Prioridad media</option>
+                                                                        <option value='3'>Prioridad baja</option>
+                                                                    ";
+                                                                }elseif($actualValues['Prioridad'] == '3'){
+                                                                    echo "
+                                                                        <option value='0' disabled>Escoja una prioridad...</option>
+                                                                        <option value='1'>Prioridad alta</option>
+                                                                        <option value='2'>Prioridad media</option>
+                                                                        <option selected value='3'>Prioridad baja</option>
+                                                                    ";
+                                                                }
+                                                            ?>
+                                                        <!-- /Option selected from DB -->
+
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">
                                                     <label for="description">Descripción</label>
-                                                    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                                                    <textarea class="form-control" name="description" value="<?php echo $actualValues['Descripcion'] ?>" id="description" rows="3"><?php echo $actualValues['Descripcion'] ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-5">
                                                     <label for="worker">Trabajador</label>
                                                     <select id="worker" name="worker" class="form-control">
-                                                        <option selected disabled value="0">Elige un trabajador para esta tarea...</option>
-                                                        <?php 
+                                                        <option value="0">Elige un trabajador para esta tarea...</option>
+                                                        <?php
                                                             $workerQuery = mysqli_query($db, "SELECT ID_trabajador, Nombre, Apellidos FROM trabajadores");
                                                             // Workers count
                                                             $rows = mysqli_num_rows($workerQuery);
@@ -169,14 +193,18 @@
                                                             // For loop depending of workers count
                                                             for($i=0;$i<$rows;$i++){
                                                                 $data=mysqli_fetch_array($workerQuery);
-                                                                echo "<option value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                if($data['ID_trabajador'] == $actualValues['Trabajador']){
+                                                                    echo "<option selected value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                }else{
+                                                                    echo "<option value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                }
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-5">
                                                     <label for="limitDate">Fecha límite</label>
-                                                    <input type="date" class="form-control"name="limitDate" id="limitDate">
+                                                    <input type="date" class="form-control" value="<?php echo $actualValues['Fecha'] ?>"  name="limitDate" id="limitDate">
                                                 </div>
                                             </div>
                                             <div class="form-row">
