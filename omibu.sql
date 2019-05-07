@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-05-2019 a las 11:46:07
+-- Tiempo de generación: 07-05-2019 a las 09:18:13
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -50,12 +50,28 @@ INSERT INTO `clientes` (`ID_cliente`, `Nombre`) VALUES
 CREATE TABLE `tareas` (
   `ID_tarea` bigint(20) UNSIGNED NOT NULL,
   `Nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
-  `Descripción` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `Descripcion` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
   `Fecha` date NOT NULL,
   `Prioridad` int(1) NOT NULL,
   `Trabajador` bigint(20) NOT NULL,
-  `Cliente` bigint(20) NOT NULL
+  `Cliente` bigint(20) NOT NULL,
+  `Finalizado` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tareas`
+--
+
+INSERT INTO `tareas` (`ID_tarea`, `Nombre`, `Descripcion`, `Fecha`, `Prioridad`, `Trabajador`, `Cliente`, `Finalizado`) VALUES
+(1, 'Ejemplo de tarea', 'Ejemplo de descripción de una tarea de prioridad alta', '2019-05-15', 1, 2, 1, 1),
+(2, 'Ejemplo de tarea', 'Ejemplo de descripción de una tarea de prioridad media', '2019-05-22', 2, 2, 2, 0),
+(3, 'Ejemplo de tarea', 'Ejemplo de descripción de una tarea de prioridad baja', '2019-05-13', 3, 2, 1, 0),
+(10, 'Titulo de tarea', 'Esto es la descripción', '2020-01-01', 1, 2, 1, 0),
+(11, 'Tarea 1', 'Tarea ejemplo para Sitamon', '2021-01-01', 2, 2, 2, 0),
+(12, 'Tarea ejemplo', 'oakkdsad', '2023-03-02', 3, 2, 2, 0),
+(13, 'asdf', 'asdfasdf', '2019-05-23', 2, 2, 2, 0),
+(14, 'Ejemplo de tare', 'Ejemplo de descripción de una tarea de prioridad alta', '2019-05-15', 1, 2, 0, 0),
+(15, 'Ejemplo de tarea', 'Ejemplo de descripción eee\r\n una tarea de prioridad alta', '2019-05-15', 1, 2, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +137,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `tareas`
 --
 ALTER TABLE `tareas`
-  MODIFY `ID_tarea` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_tarea` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `trabajadores`
