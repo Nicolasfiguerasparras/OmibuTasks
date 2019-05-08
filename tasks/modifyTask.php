@@ -1,5 +1,5 @@
 <!--Extract session-->
-<?php
+    <?php
         session_start();
     ?>
 <!--/Extract session-->
@@ -46,15 +46,19 @@
                 <?php
                     if(isset($_POST['addTask'])){
                         $title = $_POST['title'];
-                        $priority = $_POST['priority'];
+                        if($_POST['priority'] == '1'){
+                            $priority = $_POST['priority'];
+                        }else{
+                            $priority = '0';
+                        }
                         $description = $_POST['description'];
                         $limitDate = $_POST['limitDate'];
                         $workerID = $_POST['worker'];
                         $clientID = $_POST['clientID'];
                         
-                        // Restrictions
+                        // Add restrictions to inputs //
 
-                        $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente, Finalizado) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
+                        $modifyTaskQuery = mysqli_query($db, "UPDATE tareas SET Nombre='$title', Descripcion='$description', Fecha='$limitDate', Prioridad='$priority', Trabajador='$workerID'") or die(mysqli_error($db));
 
                         header("location: ../index.php");
                     }
@@ -63,7 +67,7 @@
 		
 		<!-- Extract client data -->
 			<?php
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$_SESSION[email]'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE ID_trabajador = '$_SESSION[ID]'"));
 			?>
 		<!-- /Extract client data -->
 	
@@ -122,7 +126,7 @@
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 
-                                        <form action="addTask.php" method="post" id="addTaskForm">
+                                        <form action="modifyTask.php" method="post" id="addTaskForm">
 
                                             <!-- Invisible inputs -->
                                                 <input type="number" value="<?php echo $id ?>" name="taskID" hidden>
@@ -136,42 +140,9 @@
                                             <!-- /Get actual values -->
 
                                             <div class="form-row">
-                                                <div class="form-group col-md-5">
+                                                <div class="form-group col-md-10">
                                                     <label for="title">Título de la tarea</label>
                                                     <input id="title" name="title" type="text" class="form-control" value="<?php echo $actualValues['Nombre'] ?>" required>
-                                                </div>
-                                                <div class="form-group col-md-5">
-                                                    <label for="priority">Prioridad</label>
-                                                    <select id="priority" name="priority" class="form-control">
-                                                        
-                                                        <!-- Option selected from DB -->
-                                                            <?php
-                                                                if($actualValues['Prioridad'] == '1'){
-                                                                    echo "
-                                                                        <option value='0' disabled>Escoja una prioridad...</option>
-                                                                        <option selected value='1'>Prioridad alta</option>
-                                                                        <option value='2'>Prioridad media</option>
-                                                                        <option value='3'>Prioridad baja</option>
-                                                                    ";
-                                                                }elseif($actualValues['Prioridad'] == '2'){
-                                                                    echo "
-                                                                        <option value='0' disabled>Escoja una prioridad...</option>
-                                                                        <option value='1'>Prioridad alta</option>
-                                                                        <option selected value='2'>Prioridad media</option>
-                                                                        <option value='3'>Prioridad baja</option>
-                                                                    ";
-                                                                }elseif($actualValues['Prioridad'] == '3'){
-                                                                    echo "
-                                                                        <option value='0' disabled>Escoja una prioridad...</option>
-                                                                        <option value='1'>Prioridad alta</option>
-                                                                        <option value='2'>Prioridad media</option>
-                                                                        <option selected value='3'>Prioridad baja</option>
-                                                                    ";
-                                                                }
-                                                            ?>
-                                                        <!-- /Option selected from DB -->
-
-                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -207,9 +178,17 @@
                                                     <input type="date" class="form-control" value="<?php echo $actualValues['Fecha'] ?>"  name="limitDate" id="limitDate">
                                                 </div>
                                             </div>
+                                            <div>
                                             <div class="form-row">
-                                                <div class="form-group col-md-2">
-                                                    <input type="submit" class="btn btn-primary" id="addTask" name="addTask">
+                                                <div class="form-group col-md-3" >
+                                                    <label class="container" style="padding-left: 0px">
+                                                        <input type="checkbox" name="priority" value="<?php echo $actualValues['Prioridad'] ?>" <?php if($actualValues['Prioridad']=='1'){ echo "checked='true'"; } ?>> Destacar
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-2"">
+                                                    <input type="submit" class="btn btn-primary" id="modifyTask" name="modifyTask">
                                                 </div>
                                             </div>
                                         </form>

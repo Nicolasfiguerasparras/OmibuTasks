@@ -28,18 +28,17 @@
 			<?php
                 include('connectDB.php');
                 $db = connectDb();
-                //$id = collectID($db, 'trabajadores');
             ?>
 		<!-- /Establish connection with DB -->
 
 		<!-- Restrictions -->
 			<?php
                 if(!isset($_SESSION['login_ok'])){
-					header("location: notAllowed.php");
+					header("location: login/");
 				}
 				
 				if(isset($_GET['client']) && $_GET['client'] == ""){
-					header("location: index.php");
+					header("location: login/");
 				}
 
 				date_default_timezone_set('Europe/Madrid');
@@ -58,16 +57,7 @@
 
 					<!-- Add client button -->
 						<div class="col-3 addClientBox">
-							<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action
-							</button>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<a class="dropdown-item" href="#">Something else here</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Separated link</a>
-							</div>
+							<a href="#"><i class="fas fa-plus-circle addClientBtn"></i></a>
 						</div>
 					<!-- /Add client button -->
 
@@ -130,26 +120,24 @@
 										<nav>
 											<div class="nav nav-tabs" id="nav-tab" role="tablist">
 												<a class="nav-item nav-link active" id="genericView" data-toggle="tab" href="#nav-first" role="tab" aria-controls="genericView" aria-selected="true">Vista general</a>
-												<a class="nav-item nav-link" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Prioridad alta</a>
-												<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Prioridad media</a>
-												<a class="nav-item nav-link" id="lowPriority" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
-												<a class="nav-item nav-link" id="options" data-toggle="tab" href="#nav-contact2" role="tab" aria-controls="nav-contact2" aria-selected="false">Opciones</a>
+												<a class="nav-item nav-link" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Calendario</a>
+												<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tareas destacadas</a>
+												<!-- <a class="nav-item nav-link" id="lowPriority" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Prioridad baja</a>
+												<a class="nav-item nav-link" id="options" data-toggle="tab" href="#nav-contact2" role="tab" aria-controls="nav-contact2" aria-selected="false">Opciones</a> -->
 											</div>
 										</nav>
 
 										<?php
 											$taskQuery = mysqli_query($db, "SELECT * FROM tareas WHERE trabajador = $_SESSION[ID] and Cliente = $_GET[client]");
 											
-											$lowPriority = $mediumPriority = $highPriority = Array();
+											$standarPriority = $highPriority = Array();
 
 											if($row = mysqli_fetch_array($taskQuery)){ 
 												do{
 													if($row['Prioridad'] == 1){
 														$highPriority[] = $row;
-													}elseif($row['Prioridad'] == 2){
-														$mediumPriority[] = $row;
-													}elseif($row['Prioridad'] == 3){
-														$lowPriority[] = $row;
+													}elseif($row['Prioridad'] == 0){
+														$standarPriority[] = $row;
 													}
 												}while($row = mysqli_fetch_array($taskQuery));
 											}
@@ -164,7 +152,7 @@
 														<thead>
 															<tr class="table-primary">
 																<th scope="col"></th>
-																<th scope="col">Prioridad</th>
+																<th scope="col">Responsable</th>
 																<th scope="col">Título</th>
 																<th scope="col">Descripción</th>
 																<th scope="col">Fecha límite</th>
@@ -185,7 +173,8 @@
 																				echo "<td><i class='fa fa-check'></i></td>";
 																			}
 																			
-																			echo "<td>Alta</td>";
+																			$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
+																			echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
 																			echo "<td>".$auxArray['Nombre']."</td>";
 																			echo "<td>".$auxArray['Descripcion']."</td>";
 																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
@@ -198,15 +187,17 @@
 
 															<!-- Medium priority tasks -->
 																<?php
-																	for($i=0; $i<sizeof($mediumPriority); $i++){
-																		$auxArray = $mediumPriority[$i];
+																	for($i=0; $i<sizeof($standarPriority); $i++){
+																		$auxArray = $standarPriority[$i];
 																		echo "<tr class='table-warning'>";
 																			if($auxArray['Finalizado'] == 0){
 																				echo "<td><i class='fa fa-close'></td>";
 																			}else{
 																				echo "<td><i class='fa fa-check'></td>";
 																			}
-																			echo "<td>Media</td>";
+																			
+																			$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
+																			echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
 																			echo "<td>".$auxArray['Nombre']."</td>";
 																			echo "<td>".$auxArray['Descripcion']."</td>";
 																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
@@ -216,28 +207,6 @@
 																	}
 																?>
 															<!-- /Medium priority tasks -->
-
-															<!-- Low priority tasks -->
-																<?php
-																	for($i=0; $i<sizeof($lowPriority); $i++){
-																		$auxArray = $lowPriority[$i];
-																		echo "<tr class='table-info'>";
-																			if($auxArray['Finalizado'] == 0){
-																				echo "<td><i class='fa fa-close'></td>";
-																			}else{
-																				echo "<td><i class='fa fa-check'></td>";
-																			}
-																			echo "<td>Baja</td>";
-																			echo "<td>".$auxArray['Nombre']."</td>";
-																			echo "<td>".$auxArray['Descripcion']."</td>";
-																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
-																			echo "<td>".$date."</td>";
-																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
-																		echo "</tr>";
-																	}
-																	
-																?>
-															<!-- /Low priority tasks -->
 
 														</tbody>
 
@@ -256,7 +225,7 @@
 
 														<thead>
 															<tr class="table-primary">
-																<th scope="col">Prioridad</th>
+																<th scope="col">Responsable</th>
 																<th scope="col">Título</th>
 																<th scope="col">Descripción</th>
 																<th scope="col">Fecha límite</th>
@@ -268,7 +237,8 @@
 																for($i=0; $i<sizeof($highPriority); $i++){
 																	$auxArray = $highPriority[$i];
 																	echo "<tr class='table-danger'>";
-																		echo "<td>Alta</td>";
+																		$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
+																		echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
 																		echo "<td>".$auxArray['Nombre']."</td>";
 																		echo "<td>".$auxArray['Descripcion']."</td>";
 																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
@@ -281,72 +251,6 @@
 													</table>
 												</div>
 											<!-- /High priority -->
-
-											<!-- Medium priority -->
-												<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="mediumPriority">
-													<table class="table col-11">
-
-														<thead>
-															<tr class="table-primary">
-																<th scope="col">Prioridad</th>
-																<th scope="col">Título</th>
-																<th scope="col">Descripción</th>
-																<th scope="col">Fecha límite</th>
-															</tr>
-														</thead>
-
-														<tbody>
-															<?php
-																for($i=0; $i<sizeof($mediumPriority); $i++){
-																	$auxArray = $mediumPriority[$i];
-																	echo "<tr class='table-warning'>";
-																		echo "<td>Media</td>";
-																		echo "<td>".$auxArray['Nombre']."</td>";
-																		echo "<td>".$auxArray['Descripcion']."</td>";
-																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
-																		echo "<td>".$date."</td>";
-																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
-																	echo "</tr>";
-																}
-															?>
-														</tbody>
-
-													</table>
-												</div>
-											<!-- /Medium priority -->
-
-											<!-- Low priority -->
-												<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="lowPriority">
-													<table class="table col-11">
-
-														<thead>
-															<tr class="table-primary">
-																<th scope="col">Prioridad</th>
-																<th scope="col">Título</th>
-																<th scope="col">Descripción</th>
-																<th scope="col">Fecha límite</th>
-															</tr>
-														</thead>
-
-														<tbody>
-															<?php
-																for($i=0; $i<sizeof($lowPriority); $i++){
-																	$auxArray = $lowPriority[$i];
-																	echo "<tr class='table-info'>";
-																		echo "<td>Baja</td>";
-																		echo "<td>".$auxArray['Nombre']."</td>";
-																		echo "<td>".$auxArray['Descripcion']."</td>";
-																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
-																		echo "<td>".$date."</td>";
-																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
-																	echo "</tr>";
-																}		
-															?>
-														</tbody>
-														
-													</table>
-												</div>
-											<!-- /Low priority -->
 
 											<!-- Options -->
 												<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
