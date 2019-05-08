@@ -25,26 +25,28 @@
 			<?php
                 include('../connectDB.php');
                 $db = connectDb();
-                $id = collectID($db, 'tareas');
-
-                // Client ID from URL
-                if(isset($_GET['client'])){
-                    $clientID = $_GET['client'];
-                }
             ?>
 		<!-- /Establish connection with DB -->
 
 		<!-- Restrictions -->
 			<?php
-                if(!isset($_SESSION['email'])){
+                if(!isset($_SESSION['login_ok'])){
 					header("location: notAllowed.php");
                 }
 			?>
 		<!-- /Restrictions -->
 
+        <!-- Extract actual data -->
+			<?php
+                $task_ID = $_GET['task'];
+                $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tareas WHERE ID_tarea = '$task_ID'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE ID_trabajador = '$_SESSION[ID]'"));
+			?>
+		<!-- /Extract actual data -->
+
         <!-- Form action -->
                 <?php
-                    if(isset($_POST['addTask'])){
+                    if(isset($_POST['modifyTask'])){
                         $title = $_POST['title'];
                         if($_POST['priority'] == '1'){
                             $priority = $_POST['priority'];
@@ -55,21 +57,25 @@
                         $limitDate = $_POST['limitDate'];
                         $workerID = $_POST['worker'];
                         $clientID = $_POST['clientID'];
+                        $taskID = $_POST['taskID'];
                         
                         // Add restrictions to inputs //
 
-                        $modifyTaskQuery = mysqli_query($db, "UPDATE tareas SET Nombre='$title', Descripcion='$description', Fecha='$limitDate', Prioridad='$priority', Trabajador='$workerID'") or die(mysqli_error($db));
+                        $modifyTaskQuery = mysqli_query($db, "
+                                                        UPDATE tareas SET 
+                                                                        Nombre='$title', 
+                                                                        Descripcion='$description', 
+                                                                        Fecha='$limitDate', 
+                                                                        Prioridad='$priority', 
+                                                                        Trabajador='$workerID' 
+                                                        WHERE ID_tarea='$task_ID'
+                                                        ") or die(mysqli_error($db));
 
-                        header("location: ../index.php");
+                        echo mysqli_error($db);
+                        header("location: ../index.php?client=$_POST[clientID]");
                     }
                 ?>
         <!-- /Form action -->
-		
-		<!-- Extract client data -->
-			<?php
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE ID_trabajador = '$_SESSION[ID]'"));
-			?>
-		<!-- /Extract client data -->
 	
 		<div class="container-fluid">
 			<div class="mainBox">
@@ -129,15 +135,9 @@
                                         <form action="modifyTask.php" method="post" id="addTaskForm">
 
                                             <!-- Invisible inputs -->
-                                                <input type="number" value="<?php echo $id ?>" name="taskID" hidden>
+                                                <input type="number" value="<?php echo $task_ID ?>" name="taskID" hidden>
                                                 <input type="number" value="<?php echo $clientID ?>" name="clientID" hidden>
                                             <!-- /Invisible inputs -->
-
-                                            <!-- Get actual values -->
-                                                <?php
-                                                    $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tareas WHERE ID_tarea = '$_GET[task]'"));
-                                                ?>
-                                            <!-- /Get actual values -->
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">

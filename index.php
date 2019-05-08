@@ -128,7 +128,7 @@
 										</nav>
 
 										<?php
-											$taskQuery = mysqli_query($db, "SELECT * FROM tareas WHERE trabajador = $_SESSION[ID] and Cliente = $_GET[client]");
+											$taskQuery = mysqli_query($db, "SELECT * FROM tareas WHERE trabajador = $_SESSION[ID] and Cliente = $actualID");
 											
 											$standarPriority = $highPriority = Array();
 
@@ -179,7 +179,7 @@
 																			echo "<td>".$auxArray['Descripcion']."</td>";
 																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																			echo "<td>".$date."</td>";
-																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																?>
@@ -243,7 +243,7 @@
 																		echo "<td>".$auxArray['Descripcion']."</td>";
 																		$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																		echo "<td>".$date."</td>";
-																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																		echo "<td style='text-align: center'><a href='Tasks/modifyTask.phptask=$auxArray[ID_tarea]&$_GET[ID_cliente]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																	echo "</tr>";
 																}
 															?>
