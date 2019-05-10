@@ -33,12 +33,22 @@
                 if(!isset($_SESSION['login_ok'])){
 					header("location: notAllowed.php");
                 }
+
+                if(!isset($_GET['task'])){
+                    header("location: ../");
+                }
+
+                if(!isset($_GET['client'])){
+                    header("location: ../");
+                }
 			?>
 		<!-- /Restrictions -->
 
         <!-- Extract actual data -->
 			<?php
                 $task_ID = $_GET['task'];
+                $client_ID = $_GET['client'];
+
                 $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tareas WHERE ID_tarea = '$task_ID'"));
 				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE ID_trabajador = '$_SESSION[ID]'"));
 			?>
@@ -48,10 +58,10 @@
                 <?php
                     if(isset($_POST['modifyTask'])){
                         $title = $_POST['title'];
-                        if($_POST['priority'] == '1'){
+                        if($_POST['priority'] == '1' || $_POST['priority'] == true){
                             $priority = $_POST['priority'];
-                        }else{
-                            $priority = '0';
+                        }elseif($_POST['priority'] == '2' || $_POST['priority'] == false){
+                            $priority = '2';
                         }
                         $description = $_POST['description'];
                         $limitDate = $_POST['limitDate'];
@@ -136,7 +146,7 @@
 
                                             <!-- Invisible inputs -->
                                                 <input type="number" value="<?php echo $task_ID ?>" name="taskID" hidden>
-                                                <input type="number" value="<?php echo $clientID ?>" name="clientID" hidden>
+                                                <input type="number" value="<?php echo $client_ID ?>" name="clientID" hidden>
                                             <!-- /Invisible inputs -->
 
                                             <div class="form-row">

@@ -40,7 +40,7 @@
 				}
 				
 				if(isset($_GET['client']) && $_GET['client'] == ""){
-					header("location: login/");
+					header("location: index.php");
 				}
 
 				date_default_timezone_set('Europe/Madrid');
@@ -84,6 +84,7 @@
 
 						<!-- Lateral NavBar client list from DB -->
 							<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+								
 								<a class="nav-link" href="myTasks/">Mis tareas</a>
 								<?php
 									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
@@ -104,6 +105,7 @@
 									}
 								?>
 								<a class="nav-link" href="login/logout.php">Logout</a>
+
 							</div>
 						<!-- /Lateral NavBar client list from DB -->
 
@@ -119,6 +121,7 @@
 							?>
 									<div class="tab-content" id="v-pills-tabContent">
 										<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+											
 											<nav>
 												<div class="nav nav-tabs" id="nav-tab" role="tablist">
 													<a class="nav-item nav-link active" id="genericView" data-toggle="tab" href="#nav-first" role="tab" aria-controls="genericView" aria-selected="true">Vista general</a>
@@ -136,12 +139,13 @@
 													do{
 														if($row['Prioridad'] == 1){
 															$highPriority[] = $row;
-														}elseif($row['Prioridad'] == 0){
+														}elseif($row['Prioridad'] == 2){
 															$standarPriority[] = $row;
 														}
 													}while($row = mysqli_fetch_array($taskQuery));
 												}
 											?>
+
 											<div class="tab-content" id="nav-tabContent">
 
 												<!-- Generic view -->
@@ -202,7 +206,7 @@
 																				echo "<td>".$auxArray['Descripcion']."</td>";
 																				$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																				echo "<td>".$date."</td>";
-																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																			echo "</tr>";
 																		}
 																	?>
@@ -215,12 +219,20 @@
 																	<td colspan="6"><a href="tasks/addTask.php?client=<?php echo $actualID ?>"><button type="button" class="btn btn-secondary" style="width: 100%">Añadir tarea</button></a></td>
 																</tr>
 															</tfoot>
+
 														</table>
+
 													</div>
 												<!-- /Generic view -->
 												
 												<!-- Calendar -->
 													<div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
+														
+													</div>
+												<!-- /Calendar -->
+
+												<!-- Highlighted -->
+													<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
 														<table class="table col-11">
 
 															<thead>
@@ -250,16 +262,6 @@
 															</tbody>
 														</table>
 													</div>
-												<!-- /Calendar -->
-
-												<!-- Highlighted -->
-													<div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="options">
-														<br>
-														<button type="button" class="btn btn-outline-info"><a href="tasks/addTask.php?client=<?php echo $actualID ?>">Añadir tarea</a></button>
-														<button type="button" class="btn btn-outline-info"><a href="">Ver ficha</a></button>
-														<button type="button" class="btn btn-outline-info"><a href="">Editar tareas</a></button>
-														<button type="button" class="btn btn-outline-info"><a href="">Ver calendario</a></button>
-													</div>
 												<!-- /Highlighted -->
 
 											</div>
@@ -276,7 +278,6 @@
 								}
 							?>
 						</div>
-
 					<!-- Main content -->
 
 				</div>
@@ -288,5 +289,6 @@
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<!-- /Bootstrap JS -->
+
 	</body>
 </html>
