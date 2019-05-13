@@ -255,7 +255,7 @@
 																			echo "<td>".$auxArray['Descripcion']."</td>";
 																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
 																			echo "<td>".$date."</td>";
-																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.phptask=$auxArray[ID_tarea]&$_GET[ID_cliente]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.phptask=$auxArray[ID_tarea]&$_GET[client]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																?>
