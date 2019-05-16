@@ -39,6 +39,10 @@ body{
     text-align: center;
 }
 
+.calendar{
+    height: 20px;
+}
+
 /* Fonts */
 
 @import url('https://fonts.googleapis.com/css?family=Poppins');
