@@ -33,7 +33,6 @@
             <?php
                 include('../connectDB.php');
                 $db = connectDb();
-                //$id = collectID($db, 'trabajadores');
             ?>
         <!-- /Establish connection with DB -->
 
@@ -43,12 +42,12 @@
                     $email = $_POST['email'];
                     $password = $_POST['pass'];
                     
-                    $loginQuery = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$email' and Password = '$password'"));
+                    $loginQuery = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE email = '$email' and password = '$password'"));
                     
                     if(!$loginQuery == ""){
                         $_SESSION['login_ok'] = true;
                         $_SESSION['email'] = $email;
-                        $_SESSION['ID']= $loginQuery['ID_trabajador'];
+                        $_SESSION['ID']= $loginQuery['worker_ID'];
                         
                         // Codificate session and save in cookie if openSession exist
                         $dataSesion = session_encode();

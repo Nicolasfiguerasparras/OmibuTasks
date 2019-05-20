@@ -31,7 +31,6 @@
 			<?php
                 include('../connectDB.php');
                 $db = connectDb();
-                //$id = collectID($db, 'trabajadores');
             ?>
 		<!-- /Establish connection with DB -->
 
@@ -45,7 +44,7 @@
 		
 		<!-- Extract client data -->
 			<?php
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$_SESSION[email]'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE email = '$_SESSION[email]'"));
 			?>
 		<!-- /Extract client data -->
 	
@@ -61,7 +60,7 @@
 
 					<!-- Welcome message -->
 						<div class="col-9 welcomeMessage">
-							<h1><?php echo $workerData['Nombre']." ".$workerData['Apellidos']; ?></h1>
+							<h1><?php echo $workerData['name']." ".$workerData['surname']; ?></h1>
 						</div>
 					<!-- /Welcome message -->
 
@@ -74,18 +73,18 @@
 							<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 								<a class="nav-link active" href="<?php echo $actualURL ?>">Mis tareas</a>
 								<?php
-									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
+									$clientsQuery = mysqli_query($db, "SELECT * FROM client");
 
 									if($row = mysqli_fetch_array($clientsQuery)){ 
 										do{
 											if(isset($_GET['client'])){
-												if($_GET['client'] == $row['ID_cliente']){
-													echo "<a class='nav-link' href='../index.php?client='$row[ID_cliente]'>".$row['Nombre']."</a>";
+												if($_GET['client'] == $row['client_ID']){
+													echo "<a class='nav-link' href='../index.php?client='$row[client_ID]'>".$row['name']."</a>";
 												}else{
-													echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+													echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
 												}
 											}else{
-												echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+												echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
 											}
 											
 										}while($row = mysqli_fetch_array($clientsQuery));
@@ -100,6 +99,21 @@
 					<!-- Main content -->
 					<div class="col-9">
 						<?php
+						
+							$allTask = mysqli_query($db, "SELECT * FROM task WHERE worker_ID = '$_SESSION[ID]' AND done = '0' ORDER BY client_ID DESC");
+
+							$numClientQuery = mysqli_query($db, "SELECT * FROM client");
+							if($row = mysqli_fetch_array($numClientQuery)){
+								$aux = Array();
+								do{
+									$aux[] = $row;
+								}while(mysqli_fetch_array($numClientQuery));
+								$numClient = sizeof($aux);
+							}
+							
+							
+
+							echo $numClient;
 						
 							/* 
 								Crear un array bidimensional: sacamos todas las tareas ordenadas por id de cliente de manera descentente,

@@ -73,11 +73,11 @@
 
                         $modifyTaskQuery = mysqli_query($db, "
                                                         UPDATE tareas SET 
-                                                                        Nombre='$title', 
-                                                                        Descripcion='$description', 
-                                                                        Fecha='$limitDate', 
-                                                                        Prioridad='$priority', 
-                                                                        Trabajador='$workerID' 
+                                                                    Nombre='$title', 
+                                                                    Descripcion='$description', 
+                                                                    Fecha='$limitDate', 
+                                                                    Prioridad='$priority', 
+                                                                    Trabajador='$workerID' 
                                                         WHERE ID_tarea='$task_ID'
                                                         ") or die(mysqli_error($db));
 

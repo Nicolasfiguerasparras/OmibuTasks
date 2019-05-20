@@ -35,21 +35,20 @@
 
 		<!-- Restrictions -->
 			<?php
-                if(!isset($_SESSION['login_ok'])){
+                if(!isset($_SESSION['email']) or $_SESSION == ""){
 					header("location: login/");
 				}
 				
 				if(isset($_GET['client']) && $_GET['client'] == ""){
 					header("location: index.php");
 				}
-
 				date_default_timezone_set('Europe/Madrid');
 			?>
 		<!-- /Restrictions -->
 
 		<!-- Extract client data -->
 			<?php
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$_SESSION[email]'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE email = '$_SESSION[email]'"));
 			?>
 		<!-- /Extract client data -->
 
@@ -67,9 +66,9 @@
 						<div class="col-9 welcomeMessage">
 							<?php
 								if(isset($_GET['client'])){
-									$welcomeMessage = $workerData['Nombre']." ".$workerData['Apellidos'];
+									$welcomeMessage = $workerData['name']." ".$workerData['surname'];
 								}else{
-									$welcomeMessage = "Bienvenido, ".$workerData['Nombre']." ".$workerData['Apellidos'];
+									$welcomeMessage = "Bienvenido, ".$workerData['name']." ".$workerData['surname'];
 								}
 
 								echo "<h1>".$welcomeMessage."</h1>";
@@ -87,18 +86,18 @@
 								
 								<a class="nav-link" href="myTasks/">Mis tareas</a>
 								<?php
-									$clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
+									$clientsQuery = mysqli_query($db, "SELECT * FROM client");
 
 									if($row = mysqli_fetch_array($clientsQuery)){ 
 										do{
 											if(isset($_GET['client'])){
-												if($_GET['client'] == $row['ID_cliente']){
-													echo "<a class='nav-link active' href='index.php?client='$row[ID_cliente]'>".$row['Nombre']."</a>";
+												if($_GET['client'] == $row['client_ID']){
+													echo "<a class='nav-link active' href='index.php?client='$row[client_ID]'>".$row['name']."</a>";
 												}else{
-													echo "<a class='nav-link' href='index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+													echo "<a class='nav-link' href='index.php?client=$row[client_ID]'>".$row['name']."</a>";
 												}
 											}else{
-												echo "<a class='nav-link' href='index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+												echo "<a class='nav-link' href='index.php?client=$row[client_ID]'>".$row['name']."</a>";
 											}
 
 										}while($row = mysqli_fetch_array($clientsQuery));
@@ -131,15 +130,15 @@
 											</nav>
 
 											<?php
-												$taskQuery = mysqli_query($db, "SELECT * FROM tareas WHERE trabajador = $_SESSION[ID] and Cliente = $actualID");
+												$taskQuery = mysqli_query($db, "SELECT * FROM task WHERE worker_ID = $_SESSION[ID] and client_ID = $actualID");
 												
 												$standarPriority = $highPriority = Array();
 
 												if($row = mysqli_fetch_array($taskQuery)){ 
 													do{
-														if($row['Prioridad'] == 1){
+														if($row['priority'] == 1){
 															$highPriority[] = $row;
-														}elseif($row['Prioridad'] == 2){
+														}elseif($row['priority'] == 0){
 															$standarPriority[] = $row;
 														}
 													}while($row = mysqli_fetch_array($taskQuery));
@@ -177,13 +176,13 @@
 																					echo "<td><i class='fa fa-check'></i></td>";
 																				}
 																				
-																				$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
-																				echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
-																				echo "<td>".$auxArray['Nombre']."</td>";
-																				echo "<td>".$auxArray['Descripcion']."</td>";
-																				$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																				$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE worker_ID = $auxArray[worker_ID]"));
+																				echo "<td>".$associatedWorker['name']." ".$associatedWorker['surname']."</td>";
+																				echo "<td>".$auxArray['name']."</td>";
+																				echo "<td>".$auxArray['description']."</td>";
+																				$date = date("F j, Y", strtotime("$auxArray[limit_date]"));
 																				echo "<td>".$date."</td>";
-																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[task_ID]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																			echo "</tr>";
 																		}
 																	?>
@@ -194,19 +193,19 @@
 																		for($i=0; $i<sizeof($standarPriority); $i++){
 																			$auxArray = $standarPriority[$i];
 																			echo "<tr class='table-warning'>";
-																				if($auxArray['Finalizado'] == 0){
+																				if($auxArray['done'] == 0){
 																					echo "<td><i class='fa fa-close'></td>";
 																				}else{
 																					echo "<td><i class='fa fa-check'></td>";
 																				}
 																				
-																				$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
-																				echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
-																				echo "<td>".$auxArray['Nombre']."</td>";
-																				echo "<td>".$auxArray['Descripcion']."</td>";
-																				$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																				$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE worker_ID = $auxArray[worker_ID]"));
+																				echo "<td>".$associatedWorker['name']." ".$associatedWorker['surname']."</td>";
+																				echo "<td>".$auxArray['name']."</td>";
+																				echo "<td>".$auxArray['description']."</td>";
+																				$date = date("F j, Y", strtotime("$auxArray[limit_date]"));
 																				echo "<td>".$date."</td>";
-																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[ID_tarea]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																				echo "<td style='text-align: center'><a href='Tasks/modifyTask.php?task=$auxArray[task_ID]&client=$actualID'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																			echo "</tr>";
 																		}
 																	?>
@@ -313,13 +312,13 @@
 																	for($i=0; $i<sizeof($highPriority); $i++){
 																		$auxArray = $highPriority[$i];
 																		echo "<tr class='table-danger'>";
-																			$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT Nombre, Apellidos FROM trabajadores WHERE ID_trabajador = $auxArray[Trabajador]"));
-																			echo "<td>".$associatedWorker['Nombre']." ".$associatedWorker['Apellidos']."</td>";
-																			echo "<td>".$auxArray['Nombre']."</td>";
-																			echo "<td>".$auxArray['Descripcion']."</td>";
-																			$date = date("F j, Y", strtotime("$auxArray[Fecha]"));
+																			$associatedWorker = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE worker_ID = $auxArray[worker_ID]"));
+																			echo "<td>".$associatedWorker['name']." ".$associatedWorker['surname']."</td>";
+																			echo "<td>".$auxArray['name']."</td>";
+																			echo "<td>".$auxArray['description']."</td>";
+																			$date = date("F j, Y", strtotime("$auxArray[limit_date]"));
 																			echo "<td>".$date."</td>";
-																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.phptask=$auxArray[ID_tarea]&$_GET[client]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
+																			echo "<td style='text-align: center'><a href='Tasks/modifyTask.phptask=$auxArray[task_ID]&$_GET[client]'><i class='fa fa-edit' style='font-size:20px;color:green'></i></a></td>";
 																		echo "</tr>";
 																	}
 																?>

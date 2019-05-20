@@ -25,7 +25,7 @@
 			<?php
                 include('../connectDB.php');
                 $db = connectDb();
-                $id = collectID($db, 'tareas');
+                $id = collectID($db, 'task');
 
                 // Client ID from URL
                 if(isset($_GET['client'])){
@@ -54,7 +54,7 @@
                         
                         // Restrictions
 
-                        $createTaskQuery = mysqli_query($db, "INSERT INTO tareas (ID_tarea, Nombre, Descripcion, Fecha, Prioridad, Trabajador, Cliente, Finalizado) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
+                        $createTaskQuery = mysqli_query($db, "INSERT INTO task (task_ID, name, surname, limit_date, priority, worker_ID, client_ID, done) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
 
                         header("location: ../index.php?client=$clientID");
                     }
@@ -63,7 +63,7 @@
 		
 		<!-- Extract client data -->
 			<?php
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE Email = '$_SESSION[email]'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE email = '$_SESSION[email]'"));
 			?>
 		<!-- /Extract client data -->
 	
@@ -81,7 +81,7 @@
 
                         <!-- Welcome message -->
                             <div class="col-9 welcomeMessage">
-                                <h1><?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
+                                <h1><?php echo $workerData['name']." ".$workerData['surname'] ?></h1>
                             </div>
                         <!-- /Welcome message -->
 
@@ -95,18 +95,18 @@
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link" href="../myTasks/">Mis tareas</a>
                                     <?php
-                                        $clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
+                                        $clientsQuery = mysqli_query($db, "SELECT * FROM client");
 
                                         if($row = mysqli_fetch_array($clientsQuery)){ 
                                             do{
                                                 if(isset($_GET['client'])){
-                                                    if($_GET['client'] == $row['ID_cliente']){
-                                                        echo "<a class='nav-link active' href='../index.php?client='$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                    if($_GET['client'] == $row['client_ID']){
+                                                        echo "<a class='nav-link active' href='../index.php?client='$row[client_ID]'>".$row['name']."</a>";
                                                     }else{
-                                                        echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                        echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
                                                     }
                                                 }else{
-                                                    echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                    echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
                                                 }
                                                 
                                             }while($row = mysqli_fetch_array($clientsQuery));
@@ -134,7 +134,7 @@
                                                     <label for="title">Título de la tarea</label>
                                                     <input id="title" name="title" type="text" class="form-control" placeholder="Inserte el título..." required>
                                                 </div>
-                                                <div class="form-group col-md-5">
+                                                <!-- <div class="form-group col-md-5">
                                                     <label for="priority">Prioridad</label>
                                                     <select id="priority" name="priority" class="form-control">
                                                         <option selected value="0" disabled>Escoja una prioridad...</option>
@@ -142,7 +142,7 @@
                                                         <option value="2">Prioridad media</option>
                                                         <option value="3">Prioridad baja</option>
                                                     </select>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">
@@ -156,14 +156,14 @@
                                                     <select id="worker" name="worker" class="form-control">
                                                         <option selected disabled value="0">Elige un trabajador para esta tarea...</option>
                                                         <?php 
-                                                            $workerQuery = mysqli_query($db, "SELECT ID_trabajador, Nombre, Apellidos FROM trabajadores");
+                                                            $workerQuery = mysqli_query($db, "SELECT * FROM worker");
                                                             // Workers count
                                                             $rows = mysqli_num_rows($workerQuery);
 
                                                             // For loop depending of workers count
                                                             for($i=0;$i<$rows;$i++){
                                                                 $data=mysqli_fetch_array($workerQuery);
-                                                                echo "<option value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                echo "<option value='$data[worker_ID]'>$data[name] $data[surname]</option>"; 
                                                             }
                                                         ?>
                                                     </select>
