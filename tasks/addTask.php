@@ -46,7 +46,6 @@
                 <?php
                     if(isset($_POST['addTask'])){
                         $title = $_POST['title'];
-                        $priority = $_POST['priority'];
                         $description = $_POST['description'];
                         $limitDate = $_POST['limitDate'];
                         $workerID = $_POST['worker'];
@@ -54,7 +53,7 @@
                         
                         // Restrictions
 
-                        $createTaskQuery = mysqli_query($db, "INSERT INTO task (task_ID, name, surname, limit_date, priority, worker_ID, client_ID, done) VALUES (NULL, '$title', '$description', '$limitDate', '$priority', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
+                        $createTaskQuery = mysqli_query($db, "INSERT INTO task (task_ID, name, description, limit_date, priority, worker_ID, client_ID, done) VALUES (NULL, '$title', '$description', '$limitDate', '0', '$workerID', '$clientID', '0')") or die(mysqli_error($db));
 
                         header("location: ../index.php?client=$clientID");
                     }

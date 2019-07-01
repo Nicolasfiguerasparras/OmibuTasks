@@ -21,6 +21,16 @@
 		<!-- --------------------------------------------------------------------------------------------- -->
 	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+		<!-- Full calendar -->
+			<link href='fullcalendar/packages/core/main.css' rel='stylesheet' />
+			<link href='fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+			<script src='fullcalendar/packages/core/main.js'></script>
+			<script src='fullcalendar/packages/interaction/main.js'></script>
+			<script src='fullcalendar/packages/daygrid/main.js'></script>
+			<script src='fullcalendar/packages/core/locales-all.js'></script>
+		<!-- /Full calendar -->
+
+
 		<title>Inicio</title>
 
 	</head>
@@ -58,7 +68,7 @@
 
 					<!-- Add client button -->
 						<div class="col-3 addClientBox">
-							<a href="#"><i class="fas fa-plus-circle addClientBtn"></i></a>
+							<a href="addClient/"><i class="fas fa-plus-circle addClientBtn"></i></a>
 						</div>
 					<!-- /Add client button -->
 
@@ -226,71 +236,7 @@
 												
 												<!-- Calendar -->
 													<div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
-														<div class="col-12">
-															<table class="col-12 calendar">
-																<tr>
-																	<th>L</th>
-																	<th>M</th>
-																	<th>X</th>
-																	<th>J</th>
-																	<th>V</th>
-																	<th>S</th>
-																	<th>D</th>
-																</tr>
-																
-																<tr>
-																	<td>1</td>
-																	<td>2</td>
-																	<td>3</td>
-																	<td>4</td>
-																	<td>5</td>
-																	<td>6</td>
-																	<td>7</td>
-																</tr>
-
-																<tr>
-																	<td>8</td>
-																	<td>9</td>
-																	<td>10</td>
-																	<td>11</td>
-																	<td>12</td>
-																	<td>13</td>
-																	<td>14</td>
-																</tr>
-																
-																<tr>
-																	<td>15</td>
-																	<td>16</td>
-																	<td>17</td>
-																	<td>18</td>
-																	<td>19</td>
-																	<td>20</td>
-																	<td>21</td>
-																</tr>
-
-																<tr>
-																	<td>22</td>
-																	<td>23</td>
-																	<td>24</td>
-																	<td>25</td>
-																	<td>26</td>
-																	<td>27</td>
-																	<td>28</td>
-																</tr>
-
-																<tr>
-																	<td>29</td>
-																	<td>30</td>
-																	<td>31</td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																</tr>
-																
-															</table>
-
-														</div>
+														<div id='calendar' class="col-12"></div>
 													</div>
 												<!-- /Calendar -->
 
@@ -352,6 +298,39 @@
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<!-- /Bootstrap JS -->
+
+		<!-- FullCalendar Script -->
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
+					var calendarEl = document.getElementById('calendar');
+
+					var calendar = new FullCalendar.Calendar(calendarEl, {
+						plugins: [ 'interaction', 'dayGrid' ],
+						header: {
+							left: 'prev,next, today',
+							center: 'title',
+							right: 'dayGridMonth,dayGridWeek'
+						},
+
+						views: {
+							dayGridWeek: {
+								type: 'timeGrid',
+								duration: { days: 4 },
+								buttonText: 'Semana'
+							}
+						},
+
+						// defaultDate: '2019-05-12',
+						navLinks: false, // can click day/week names to navigate views
+						editable: true,
+						eventLimit: true, // allow "more" link when too many events
+						locale: 'es'
+					});
+					
+					calendar.render();
+				});
+			</script>
+		<!-- /FullCalendar Script -->
 
 	</body>
 </html>

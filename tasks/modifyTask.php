@@ -49,8 +49,8 @@
                 $task_ID = $_GET['task'];
                 $client_ID = $_GET['client'];
 
-                $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM tareas WHERE ID_tarea = '$task_ID'"));
-				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM trabajadores WHERE ID_trabajador = '$_SESSION[ID]'"));
+                $actualValues = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM task WHERE task_ID = '$task_ID'"));
+				$workerData = mysqli_fetch_array(mysqli_query($db, "SELECT * FROM worker WHERE worker_ID = '$_SESSION[ID]'"));
 			?>
 		<!-- /Extract actual data -->
 
@@ -72,13 +72,13 @@
                         // Add restrictions to inputs //
 
                         $modifyTaskQuery = mysqli_query($db, "
-                                                        UPDATE tareas SET 
-                                                                    Nombre='$title', 
-                                                                    Descripcion='$description', 
-                                                                    Fecha='$limitDate', 
-                                                                    Prioridad='$priority', 
-                                                                    Trabajador='$workerID' 
-                                                        WHERE ID_tarea='$task_ID'
+                                                        UPDATE task SET 
+                                                                    name='$title', 
+                                                                    description='$description', 
+                                                                    limit_date='$limitDate', 
+                                                                    priority='$priority', 
+                                                                    worker_ID='$workerID' 
+                                                        WHERE task_ID='$task_ID'
                                                         ") or die(mysqli_error($db));
 
                         echo mysqli_error($db);
@@ -101,7 +101,7 @@
 
                         <!-- Welcome message -->
                             <div class="col-9 welcomeMessage">
-                                <h1><?php echo $workerData['Nombre']." ".$workerData['Apellidos'] ?></h1>
+                                <h1><?php echo $workerData['name']." ".$workerData['surname'] ?></h1>
                             </div>
                         <!-- /Welcome message -->
 
@@ -115,18 +115,18 @@
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link" href="../myTasks/">Mis tareas</a>
                                     <?php
-                                        $clientsQuery = mysqli_query($db, "SELECT * FROM clientes");
+                                        $clientsQuery = mysqli_query($db, "SELECT * FROM client");
 
                                         if($row = mysqli_fetch_array($clientsQuery)){ 
                                             do{
                                                 if(isset($_GET['client'])){
-                                                    if($_GET['client'] == $row['ID_cliente']){
-                                                        echo "<a class='nav-link active' href='../index.php?client='$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                    if($_GET['client'] == $row['client_ID']){
+                                                        echo "<a class='nav-link active' href='../index.php?client='$row[client_ID]'>".$row['name']."</a>";
                                                     }else{
-                                                        echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                        echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
                                                     }
                                                 }else{
-                                                    echo "<a class='nav-link' href='../index.php?client=$row[ID_cliente]'>".$row['Nombre']."</a>";
+                                                    echo "<a class='nav-link' href='../index.php?client=$row[client_ID]'>".$row['name']."</a>";
                                                 }
                                                 
                                             }while($row = mysqli_fetch_array($clientsQuery));
@@ -152,32 +152,32 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">
                                                     <label for="title">Título de la tarea</label>
-                                                    <input id="title" name="title" type="text" class="form-control" value="<?php echo $actualValues['Nombre'] ?>" required>
+                                                    <input id="title" name="title" type="text" class="form-control" value="<?php echo $actualValues['name'] ?>" required>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-10">
                                                     <label for="description">Descripción</label>
-                                                    <textarea class="form-control" name="description" value="<?php echo $actualValues['Descripcion'] ?>" id="description" rows="3"><?php echo $actualValues['Descripcion'] ?></textarea>
+                                                    <textarea class="form-control" name="description" value="<?php echo $actualValues['description'] ?>" id="description" rows="3"><?php echo $actualValues['description'] ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-5">
                                                     <label for="worker">Trabajador</label>
                                                     <select id="worker" name="worker" class="form-control">
-                                                        <option value="0">Elige un trabajador para esta tarea...</option>
+                                                        <option value="0">Elige un Trabajador para esta tarea...</option>
                                                         <?php
-                                                            $workerQuery = mysqli_query($db, "SELECT ID_trabajador, Nombre, Apellidos FROM trabajadores");
+                                                            $workerQuery = mysqli_query($db, "SELECT worker_ID, name, surname FROM worker");
                                                             // Workers count
                                                             $rows = mysqli_num_rows($workerQuery);
 
                                                             // For loop depending of workers count
                                                             for($i=0;$i<$rows;$i++){
                                                                 $data=mysqli_fetch_array($workerQuery);
-                                                                if($data['ID_trabajador'] == $actualValues['Trabajador']){
-                                                                    echo "<option selected value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                if($data['worker_ID'] == $actualValues['worker_ID']){
+                                                                    echo "<option selected value='$data[worker_ID]'>$data[name] $data[surname]</option>"; 
                                                                 }else{
-                                                                    echo "<option value='$data[ID_trabajador]'>$data[Nombre] $data[Apellidos]</option>"; 
+                                                                    echo "<option value='$data[worker_ID]'>$data[name] $data[surname]</option>"; 
                                                                 }
                                                             }
                                                         ?>
@@ -185,14 +185,14 @@
                                                 </div>
                                                 <div class="form-group col-md-5">
                                                     <label for="limitDate">Fecha límite</label>
-                                                    <input type="date" class="form-control" value="<?php echo $actualValues['Fecha'] ?>"  name="limitDate" id="limitDate">
+                                                    <input type="date" class="form-control" value="<?php echo $actualValues['limit_date'] ?>"  name="limitDate" id="limitDate">
                                                 </div>
                                             </div>
                                             <div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-3" >
                                                     <label class="container" style="padding-left: 0px">
-                                                        <input type="checkbox" name="priority" value="<?php echo $actualValues['Prioridad'] ?>" <?php if($actualValues['Prioridad']=='1'){ echo "checked='true'"; } ?>> Destacar
+                                                        <input type="checkbox" name="priority" value="<?php echo $actualValues['priority'] ?>" <?php if($actualValues['priority']=='1'){ echo "checked='true'"; } ?>> Destacar
                                                     </label>
                                                 </div>
                                             </div>
