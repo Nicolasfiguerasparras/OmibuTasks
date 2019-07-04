@@ -50,7 +50,7 @@
 		<!-- /Extract client data -->
 
 		<div class="container-fluid">
-			<div class="mainBox">
+			<div class="col-10 offset-1 mainBox">
 				<div class="row">
 
 					<!-- Add client button -->
@@ -103,7 +103,8 @@
 
 					<!-- Main content -->
 						<div class="col-9">
-							<form>
+							<form action="index.php" method="POST">
+								
 								<div class="row">
 									<div class="col-5" style="border: solid 3px black">
 										<h2 style="text-align: center">Datos del cliente</h2>

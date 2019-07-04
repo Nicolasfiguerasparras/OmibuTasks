@@ -63,7 +63,7 @@
 		<!-- /Extract client data -->
 
 		<div class="container-fluid">
-			<div class="mainBox">
+			<div class="col-10 offset-1 mainBox">
 				<div class="row">
 
 					<!-- Add client button -->
@@ -133,8 +133,8 @@
 											
 											<nav>
 												<div class="nav nav-tabs" id="nav-tab" role="tablist">
-													<a class="nav-item nav-link active" id="genericView" data-toggle="tab" href="#nav-first" role="tab" aria-controls="genericView" aria-selected="true">Vista general</a>
-													<a class="nav-item nav-link" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Calendario</a>
+													<a class="nav-item nav-link active" id="highPriority" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Calendario</a>
+													<a class="nav-item nav-link" id="genericView" data-toggle="tab" href="#nav-first" role="tab" aria-controls="genericView" aria-selected="false">Vista general</a>
 													<a class="nav-item nav-link" id="mediumPriority" data-toggle="tab" href="#nav-contact2" role="tab" aria-controls="nav-contact2" aria-selected="false">Tareas destacadas</a>
 												</div>
 											</nav>
@@ -158,7 +158,7 @@
 											<div class="tab-content" id="nav-tabContent">
 
 												<!-- Generic view -->
-													<div class="tab-pane fade show active" id="nav-first" role="tabpanel" aria-labelledby="genericView">
+													<div class="tab-pane fade" id="nav-first" role="tabpanel" aria-labelledby="genericView">
 
 														<table class="table col-11 table-responsive-md">
 
@@ -224,7 +224,7 @@
 															</tbody>
 
 															<tfoot>
-																<tr class="table-light">
+																<tr class="table">
 																	<td colspan="6"><a href="tasks/addTask.php?client=<?php echo $actualID ?>"><button type="button" class="btn btn-secondary" style="width: 100%">Añadir tarea</button></a></td>
 																</tr>
 															</tfoot>
@@ -235,7 +235,7 @@
 												<!-- /Generic view -->
 												
 												<!-- Calendar -->
-													<div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
+													<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="highPriority">
 														<div id='calendar' class="col-12"></div>
 													</div>
 												<!-- /Calendar -->
@@ -326,7 +326,7 @@
 						eventLimit: true, // allow "more" link when too many events
 						locale: 'es'
 					});
-					
+					calendar.setOption('height', 1000);
 					calendar.render();
 				});
 			</script>

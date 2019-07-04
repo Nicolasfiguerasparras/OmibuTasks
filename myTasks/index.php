@@ -59,7 +59,7 @@
 		<!-- /Extract client data -->
 	
 		<div class="container-fluid">
-			<div class="mainBox">
+			<div class="col-10 offset-1 mainBox">
 				<div class="row">
 
 					<!-- Add client button -->

@@ -80,15 +80,14 @@
                                                                     worker_ID='$workerID' 
                                                         WHERE task_ID='$task_ID'
                                                         ") or die(mysqli_error($db));
-
                         echo mysqli_error($db);
-                        header("location: ../index.php?client=$_POST[clientID]");
+                        // header("location: ../index.php?client=$_POST[clientID]");
                     }
                 ?>
         <!-- /Form action -->
 	
 		<div class="container-fluid">
-			<div class="mainBox">
+            <div class="col-10 offset-1 mainBox">
 
                 <!-- Header -->
                     <div class="row">
@@ -191,8 +190,8 @@
                                             <div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-3" >
-                                                    <label class="container" style="padding-left: 0px">
-                                                        <input type="checkbox" name="priority" value="<?php echo $actualValues['priority'] ?>" <?php if($actualValues['priority']=='1'){ echo "checked='true'"; } ?>> Destacar
+                                                    <label for="priority" class="container" style="padding-left: 0px">
+                                                        <input type="checkbox" name="priority" id="priority" value="<?php echo $actualValues['priority'] ?>" <?php if($actualValues['priority']=='1'){ echo "checked='true'"; } ?>> Destacar
                                                     </label>
                                                 </div>
                                             </div>
