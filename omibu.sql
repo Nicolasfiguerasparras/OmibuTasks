@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-07-2019 a las 17:25:02
+-- Tiempo de generación: 04-07-2019 a las 17:49:01
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -81,7 +81,9 @@ CREATE TABLE `task` (
 
 INSERT INTO `task` (`task_ID`, `name`, `description`, `limit_date`, `priority`, `worker_ID`, `client_ID`, `done`) VALUES
 (1, 'Tarea ejemplo', 'Esto es un ejemplo de tarea ', '2019-05-22', 0, 1, 1, 0),
-(2, 'asdasd', 'asdasd', '2020-07-01', 0, 2, 1, 0);
+(2, 'asdasd', 'asdasd', '2020-07-01', 0, 2, 1, 0),
+(3, 'informatica', 'aaaaaaaaaaa', '2019-07-09', 0, 2, 2, 0),
+(4, 'aaaaaaaa', 'aaaaaaaaaaaa', '2019-07-09', 0, 1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,7 @@ ALTER TABLE `client`
 -- AUTO_INCREMENT de la tabla `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `task_ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `worker`
